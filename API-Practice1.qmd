@@ -1,0 +1,52 @@
+---
+title: "API_Practice"
+author: "Maddy Enda"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(tidyverse)
+
+library(dataRetrieval)
+```
+
+#setting parameters for query
+```{r}
+siteNumber <- "11118500"
+parameterCd <- "00060"
+startDate <- "2023-08-19"
+endDate <-"2023-08-22"
+
+discharge <- readNWISuv(siteNumber, parameterCd, startDate, endDate)
+```
+
+#visualizing the data
+```{r}
+ggplot(discharge, aes(x=dateTime, y= X_00060_00000)) + geom_point() +labs( title= "stream discharge over time", x= "Date", y= "stream discharge (ft^3/s)")
+```
+
+#looking at specific storm event
+```{r}
+siteNumber <- "11118500"
+parameterCd <- "00060"
+startDate <- "2023-01-09"
+endDate <-"2023-01-09"
+
+storm_discharge <- readNWISdv(siteNumber, parameterCd, startDate, endDate)
+```
+
+```{r}
+siteNumber <- "11118500"
+parameterCd <- c("00010", "00060") # Temperature and discharge
+statCd <- c("00001", "00003") # Mean and maximum
+startDate <- "2023-01-09"
+endDate <- "2023-01-09"
+
+temperatureAndFlow <- readNWISuv(siteNumber, parameterCd, startDate, endDate,
+  statCd = statCd
+)
+```
+
